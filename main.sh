@@ -5,6 +5,12 @@ DEBIAN_FRONTEND=noninteractive
 echo 'Package: *' > /etc/apt/preferences.d/0-a
 echo 'Pin: release c=main' >> /etc/apt/preferences.d/0-a
 echo 'Pin-Priority: 390' >> /etc/apt/preferences.d/0-a
+echo 'Package: *' >> /etc/apt/preferences.d/0-a
+echo 'Pin: release c=external' >> /etc/apt/preferences.d/0-a
+echo 'Pin-Priority: 390' >> /etc/apt/preferences.d/0-a
+echo 'Package: *' >> /etc/apt/preferences.d/0-a
+echo 'Pin: release c=ubuntu' >> /etc/apt/preferences.d/0-a
+echo 'Pin-Priority: 390' >> /etc/apt/preferences.d/0-a
 # Clone Upstream
 apt update -y
 apt download nvidia-driver-"$DRIVER"
