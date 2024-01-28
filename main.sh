@@ -2,6 +2,7 @@
 DRIVER=535
 DEBIAN_FRONTEND=noninteractive
 
+rm -rfv /etc/apt/preferences.d/*
 echo 'Package: *' > /etc/apt/preferences.d/0-a
 echo 'Pin: release c=main' >> /etc/apt/preferences.d/0-a
 echo 'Pin-Priority: 390' >> /etc/apt/preferences.d/0-a
@@ -22,7 +23,7 @@ tar -xf ./data.tar.* -C ./nvidia-driver-"$DRIVER"/
 sed -i "s#nvidia-dkms-"$DRIVER"#nvidia-pika-kernel-module-"$DRIVER" | nvidia-dkms-"$DRIVER"#" ./nvidia-driver-"$DRIVER"/DEBIAN/control
 sed -i "s#$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")#$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")-100pika2#" ./nvidia-driver-"$DRIVER"/DEBIAN/control
 
-if echo "$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")-100pika2" | grep "$(apt show nvidia-driver-$DRIVER 2>&1 | grep -v "does not have a stable" | grep Version: | head -n1 | cut -f2 -d":" | cut -f1,2,3 -d"." | cut -f1 -d"-" | tr -d ' ')"
+if echo "$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")-100pika2" | grep "$(apt show nvidia-driver-$DRIVER 2>&1 | grep -v "$(apt show nvidia-driver-$DRIVER 2>&1 | grep -v "does not have a stable" | grep Version: | head -n1 | cut -f2 -d":" | tr -d ' ')"
 then
   echo "driver up to date"
   exit 0
