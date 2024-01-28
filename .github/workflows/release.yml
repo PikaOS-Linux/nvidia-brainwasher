@@ -1,7 +1,9 @@
 name: PikaOS Package Release
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+  schedule:
+    - cron: '30 2 * * *'
 
 jobs:
   build:
