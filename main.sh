@@ -21,18 +21,17 @@ mkdir -p ./nvidia-driver-"$DRIVER"/DEBIAN
 tar -xf ./control.tar.* -C ./nvidia-driver-"$DRIVER"/DEBIAN/
 tar -xf ./data.tar.* -C ./nvidia-driver-"$DRIVER"/
 
-if cat ./pika_nvidia.txt | grep "$(cat ./new_nvidia.txt)"
-then
-  echo "driver up to date"
-  exit 0
-else
 if echo "$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")-100pika3" | grep "$(cat ./pika_nvidia.txt)"
 then
   echo "driver already built"
   exit 0
+else
+if cat ./pika_nvidia.txt | grep "$(cat ./new_nvidia.txt)"
+then
+  echo "driver up to date"
+  exit 0
 fi
 fi
-
 sed -i "s#nvidia-dkms-"$DRIVER"#nvidia-pika-kernel-module-"$DRIVER" | nvidia-dkms-"$DRIVER"#" ./nvidia-driver-"$DRIVER"/DEBIAN/control
 sed -i "s#$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")#$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")-100pika3#" ./nvidia-driver-"$DRIVER"/DEBIAN/control
 
