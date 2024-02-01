@@ -40,5 +40,6 @@ dpkg-deb --build ./nvidia-driver-"$DRIVER"/
 mkdir -p ./output
 for i in ./*.deb
 do
-  mv $i ./output/$i_"$(cat ./build_version.txt)"_fixed.deb
+  mv $i ./output/"nvidia-driver-$DRIVER_"$(cat ./build_version.txt)"_fixed.deb"
 done
+
