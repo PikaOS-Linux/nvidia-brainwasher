@@ -19,15 +19,16 @@ ar -x ./nvidia-driver-"$DRIVER"*.deb
 mkdir -p ./nvidia-driver-"$DRIVER"/DEBIAN
 tar -xf ./control.tar.* -C ./nvidia-driver-"$DRIVER"/DEBIAN/
 tar -xf ./data.tar.* -C ./nvidia-driver-"$DRIVER"/
+rm -rf ./nvidia-driver-"$DRIVER"*.deb
 
-if echo "$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")-100pika5" | grep "$(cat ./pika_nvidia.txt)"
+if echo "$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")-100pika6" | grep "$(cat ./pika_nvidia.txt)"
 then
   echo "driver already built"
   exit 0
 fi
 
 sed -i "s#nvidia-dkms-"$DRIVER"#nvidia-pika-kernel-module-"$DRIVER" | nvidia-dkms-"$DRIVER"#" ./nvidia-driver-"$DRIVER"/DEBIAN/control
-sed -i "s#$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")#$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")-100pika5" ./nvidia-driver-"$DRIVER"/DEBIAN/control
+sed -i "s#$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")#$(cat ./nvidia-driver-"$DRIVER"/DEBIAN/control | grep "Version: ")-100pika6#" ./nvidia-driver-"$DRIVER"/DEBIAN/control
 apt install -y devscripts
 
 # Build package
@@ -37,5 +38,5 @@ dpkg-deb --build ./nvidia-driver-"$DRIVER"/
 mkdir -p ./output
 for i in ./*.deb
 do
-  mv $i ./output/$i-"$(apt-cache show nvidia-kernel-source-$DRIVER | grep Version: | head -n1 | cut -f2 -d":" | tr -d ' ')".deb
+  mv $i ./output/$i-"$(apt-cache show nvidia-kernel-source-$DRIVER | grep Version: | head -n1 | cut -f2 -d":" | tr -d ' ')"_fixed.deb
 done
